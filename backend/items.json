@@ -1,0 +1,25 @@
+{
+    "bread": [
+        {
+            "id": 1,
+            "name": "Sourdough loaf",
+            "price": 1200,
+            "imgName": "sourdough_loaf.png"
+        },
+        {
+            "id": 2,
+            "name": "Ciabatta loaf",
+            "price": 600,
+            "imgName": "ciabatta_loaf.png"
+        },
+        {
+            "id": 3,
+            "name": "Rye loaf",
+            "price": 1000,
+            "imgName": "rye_loaf.png"
+        }
+    ],
+    "merch": [
+
+    ]
+}
