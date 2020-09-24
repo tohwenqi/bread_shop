@@ -16,9 +16,9 @@ const calculateOrderAmount = items => {
   return 1400;
 };
 
-const items = require('items.json');
+const items = require('./items.json');
 app.get("/shop", (req, res) => {
-  res.json(data);
+  res.json(items);
 })
 
 app.post("/create-payment-intent", async (req, res) => {
