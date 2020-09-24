@@ -14,9 +14,15 @@
         },
         {
             "id": 3,
-            "name": "Rye loaf",
+            "name": "Cinnamon buns",
             "price": 1000,
-            "imgName": "rye_loaf.png"
+            "imgName": "cinnamon_buns.png"
+        },
+        {
+            "id": 4,
+            "name": "Garlic twists",
+            "price": 1000,
+            "imgName": "garlic_twists.png"
         }
     ]
 }

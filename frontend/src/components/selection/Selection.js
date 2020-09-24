@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
-import SelectionItem from './SelectionItem';
-import propTypes from 'prop-types';
+import React, { useState } from 'react';
 
-class Selection extends Component {
-    render() {
-        return (
-            this.props.breads.map((bread) => (
-                <SelectionItem key={bread.id} bread={bread} toggleSelect={this.props.toggleSelect}/>
-            ))
-        )
-    }
+export default function Selection(data) {
+    return (
+        <div className="row">
+            { data.data.map((bread) => {
+                return (
+                    <div className="col s4">
+                        {bread.name} ${bread.price/100}<br/>
+                        <img src={`http://localhost:4242/public/Images/${bread.imgName}`} width="200" height="200"/>
+                    </div>
+                )
+            }) }
+        </div>
+    )
 }
-
-Selection.propTypes = {
-    breads: propTypes.array.isRequired
-}
-
-export default Selection;
