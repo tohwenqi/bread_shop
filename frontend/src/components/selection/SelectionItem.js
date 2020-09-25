@@ -1,19 +1,46 @@
 import React, { useState } from 'react'
 
-export default function SelectionItem(data) {
+export default function SelectionItem({bread, setCart}) {
     const [count, setCount] = useState(0);
 
-    function decrementCount() {
-        setCount((prevCount) => {
-            return (prevCount === 0) ? 0 : (prevCount - 1)
+    function decrementCount(e) {
+        e.preventDefault();
+        if (count === 0) { return }
+        setCount((prevCount) => (prevCount - 1));
+        setCart((prevCart) => {
+            return (
+                prevCart.map((cartItem) => {
+                    if (cartItem.id === bread.id) {
+                        cartItem.quantity = cartItem.quantity - 1
+                    }
+                    return cartItem
+                })
+            )
         })
     }
 
-    function incrementCount() {
-        setCount(prevCount => prevCount + 1)
+    function incrementCount(e) {
+        e.preventDefault();
+        setCount(prevCount => prevCount + 1);
+        setCart((prevCart) => {
+            const found = prevCart.some(cartItem => cartItem.id === bread.id);
+            if (!found) {
+                prevCart.push({
+                    id: bread.id,
+                    quantity: 0
+                });
+            }
+            return (
+                prevCart.map((cartItem) => {
+                    if (cartItem.id === bread.id) {
+                        cartItem.quantity = cartItem.quantity + 1
+                    }
+                    return cartItem
+                })
+            )
+        })
     }
 
-    const bread = data.bread;
     return (
         <div className="col s4">
             <div className="center">

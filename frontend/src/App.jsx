@@ -19,46 +19,42 @@ import axios from 'axios';
 const promise = loadStripe("pk_test_51HNocRLdpw1A1hobGjsmkITMCTC8EsjpOKIdyf6scmKRPvMUR8ZxTQgBM2HUN9sQEzghFneFvMSn63YDUXRrbbHx00WpUsNaPb");
 const BACKEND_DOMAIN = 'http://localhost:4242'
 export default function App() {
-  const [data, setData] = useState([]);
-  // const [cart, setCart] = useState([]);
+  const [catalogue, setCatalogue] = useState([]);
+  const [cart, setCart] = useState([]);
   useEffect(() => {
-    async function fetchData() {
+    async function fetchCatalogue() {
       const response = await axios(BACKEND_DOMAIN + "/shop");
-      setData(response.data.bread);
+      setCatalogue(response.data.bread);
     }
-    fetchData();
+    fetchCatalogue();
   }, []);
   return (
     <Router>
       <div>
         <Header /> 
         <Switch>
-          <route path='/home'>
-            <Selection data={data} />
-            <nav>
-              <div className="center">
-                <Link to="/payment">
-                  <a className="waves-effect waves-light btn">
-                    Checkout
-                  </a>
-                </Link>
-              </div>
-            </nav>
-          </route>
-          <route path='/payment'>
+          <Route path='/home'>
+            <Selection catalogue={catalogue} cart={cart} setCart={setCart} />
+            <div className="center">
+              <Link to="/payment">
+                <button className="waves-effect waves-light btn">
+                  Checkout
+                </button>
+              </Link>
+            </div>
+          </Route>
+          <Route path='/payment'>
             <Elements stripe={promise}>
               <CheckoutForm />
             </Elements>
-            <nav>
-              <div className="center">
-                <Link to="/home">
-                  <a className="waves-effect waves-light btn">
-                    Back to selection
-                  </a>
-                </Link>
-              </div>
-            </nav>
-          </route>
+            <div className="center">
+              <Link to="/home">
+                <button className="waves-effect waves-light btn">
+                  Back to selection
+                </button>
+              </Link>
+            </div>
+          </Route>
         </Switch>
       </div>
     </Router>
