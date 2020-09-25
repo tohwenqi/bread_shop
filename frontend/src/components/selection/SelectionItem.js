@@ -5,13 +5,24 @@ export default function SelectionItem({bread, setCart}) {
 
     function decrementCount(e) {
         e.preventDefault();
+        // Case 1: if decrementing count from 0, don't do anything
         if (count === 0) { return }
-        setCount((prevCount) => (prevCount - 1));
+        // Not Case 1: decrement count
+        setCount(count - 1);
         setCart((prevCart) => {
+            // Case 2: if decrementing from 1, delete the item from cart
+            if (count === 1) {
+                setCart((prevCart) => {
+                    if (prevCart == undefined) { 
+                        return [] }
+                    return prevCart.filter((cartItem) => cartItem.id !== bread.id)
+                });
+            }
+            // Otherwise: decrement cart quantity
             return (
                 prevCart.map((cartItem) => {
                     if (cartItem.id === bread.id) {
-                        cartItem.quantity = cartItem.quantity - 1
+                        cartItem.quantity = cartItem.quantity - 1;
                     }
                     return cartItem
                 })
@@ -21,8 +32,13 @@ export default function SelectionItem({bread, setCart}) {
 
     function incrementCount(e) {
         e.preventDefault();
-        setCount(prevCount => prevCount + 1);
+        // cap the maximum number of each bread
+        const maxCount = 10;
+        if (count === maxCount) { return }
+        // increment count
+        setCount(count + 1);
         setCart((prevCart) => {
+            // if item not yet in cart, add it
             const found = prevCart.some(cartItem => cartItem.id === bread.id);
             if (!found) {
                 prevCart.push({
@@ -31,6 +47,7 @@ export default function SelectionItem({bread, setCart}) {
                 });
             }
             return (
+                // increment cart quantity
                 prevCart.map((cartItem) => {
                     if (cartItem.id === bread.id) {
                         cartItem.quantity = cartItem.quantity + 1

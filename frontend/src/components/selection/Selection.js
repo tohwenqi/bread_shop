@@ -16,7 +16,7 @@ export default function Selection({catalogue, cart, setCart}) {
                 }) }
             </div>
             <div>
-                <Cart/>
+                <Cart cart={cart} catalogue={catalogue}/>
             </div>
         </React.Fragment>
     )
