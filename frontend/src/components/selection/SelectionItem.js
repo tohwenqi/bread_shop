@@ -13,7 +13,7 @@ export default function SelectionItem({bread, setCart}) {
             // Case 2: if decrementing from 1, delete the item from cart
             if (count === 1) {
                 setCart((prevCart) => {
-                    if (prevCart == undefined) { 
+                    if (prevCart === undefined) { 
                         return [] }
                     return prevCart.filter((cartItem) => cartItem.id !== bread.id)
                 });
