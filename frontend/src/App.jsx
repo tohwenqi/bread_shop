@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import Header from "./components/layout/Header";
 import Selection from "./components/selection/Selection";
 import { loadStripe } from "@stripe/stripe-js";
@@ -14,6 +20,7 @@ const promise = loadStripe("pk_test_51HNocRLdpw1A1hobGjsmkITMCTC8EsjpOKIdyf6scmK
 const BACKEND_DOMAIN = 'http://localhost:4242'
 export default function App() {
   const [data, setData] = useState([]);
+  // const [cart, setCart] = useState([]);
   useEffect(() => {
     async function fetchData() {
       const response = await axios(BACKEND_DOMAIN + "/shop");
@@ -22,16 +29,47 @@ export default function App() {
     fetchData();
   }, []);
   return (
-    <div className="App">
-      <div className="Container">
-          <div className="column">
-            <Header /> 
+    <Router>
+      <div>
+        <Header /> 
+        <Switch>
+          <route path='/home'>
             <Selection data={data} />
+            <nav>
+              <div className="center">
+                <Link to="/payment">
+                  <a className="waves-effect waves-light btn">
+                    Checkout
+                  </a>
+                </Link>
+              </div>
+            </nav>
+          </route>
+          <route path='/payment'>
             <Elements stripe={promise}>
               <CheckoutForm />
             </Elements>
-          </div>
+            <nav>
+              <div className="center">
+                <Link to="/home">
+                  <a className="waves-effect waves-light btn">
+                    Back to selection
+                  </a>
+                </Link>
+              </div>
+            </nav>
+          </route>
+        </Switch>
       </div>
-    </div>
+    </Router>
+    // <div className="App">
+    //   <div className="Container">
+    //       <div className="column">
+    //         <Elements stripe={promise}>
+    //           <CheckoutForm />
+    //         </Elements>
+    //       </div>
+    //   </div>
+    // </div>
   );
 }

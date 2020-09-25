@@ -18,7 +18,7 @@ export default function SelectionItem(data) {
         <div className="col s4">
             <div className="center">
                 <h5>{bread.name}</h5>
-                <img src={`http://localhost:4242/public/Images/${bread.imgName}`} width="200" height="200"/>
+                <img src={`http://localhost:4242/public/Images/${bread.imgName}`} alt={bread.name} width="200" height="200"/>
                 <p className="light">${bread.price/100}</p>
                 <button className="btn-floating waves-effect waves-light btn-small" style={{"marginRight":"10px"}} onClick={decrementCount}>-</button>
                 <span>{count}</span>
