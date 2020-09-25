@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 export default function SelectionItem({bread, cart, setCart, catalogue, setSubtotal}) {
-    const [count, setCount] = useState(0);
 
     function decrementCount(e) {
         e.preventDefault();
-        // Case 1: if decrementing count from 0, don't do anything
-        if (count === 0) { return }
-        // Not Case 1: decrement count
-        setCount(count - 1);
+        // if item not in cart, ignore
+        const found = cart.some(cartItem => cartItem.id === bread.id);
+        if (!found) {
+            return
+        }
         setCart((prevCart) => {
             // Case 2: if decrementing from 1, delete the item from cart
-            if (count === 1) {
+            if (getQuantity(bread.id) === 1) {
                 setCart((prevCart) => {
                     if (prevCart === undefined) { 
                         return [] }
@@ -35,10 +35,8 @@ export default function SelectionItem({bread, cart, setCart, catalogue, setSubto
     function incrementCount(e) {
         e.preventDefault();
         // cap the maximum number of each bread
-        const maxCount = 10;
-        if (count === maxCount) { return }
-        // increment count
-        setCount(count + 1);
+        const maxQuantity = 10;
+        if (getQuantity(bread.id) === maxQuantity) { return }
         setCart((prevCart) => {
             // if item not yet in cart, add it
             const found = prevCart.some(cartItem => cartItem.id === bread.id);
@@ -71,6 +69,14 @@ export default function SelectionItem({bread, cart, setCart, catalogue, setSubto
         }
     }
 
+    function getQuantity(id) {
+        for(var i = 0; i < cart.length; i += 1) {
+            if(cart[i]["id"] === id) {
+                return cart[i]["quantity"]
+            }
+        }
+    }
+
     function addToSubtotal(amount) {
         setSubtotal((prevSubtotal) => prevSubtotal + amount);
     }
@@ -82,7 +88,7 @@ export default function SelectionItem({bread, cart, setCart, catalogue, setSubto
                 <img src={`http://localhost:4242/public/Images/${bread.imgName}`} alt={bread.name} width="200" height="200"/>
                 <p className="light">${bread.price/100}</p>
                 <button className="btn-floating waves-effect waves-light btn-small" style={{"marginRight":"10px"}} onClick={decrementCount}>-</button>
-                <span>{count}</span>
+                <span>{(getQuantity(bread.id) !== undefined) ? getQuantity(bread.id) : 0}</span>
                 <button className="btn-floating waves-effect waves-light btn-small" style={{"marginLeft":"10px"}} onClick={incrementCount}>+</button>
             </div>
         </div>

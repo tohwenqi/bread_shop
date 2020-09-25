@@ -59,7 +59,6 @@ export default function CheckoutForm({ cart, subtotal }) {
   };
 
   const handleSubmit = async ev => {
-    console.log("handleSubmit")
     ev.preventDefault();
     setProcessing(true);
     const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -76,7 +75,6 @@ export default function CheckoutForm({ cart, subtotal }) {
       setSucceeded(true);
     }
   };
-  console.log(processing, disabled, succeeded)
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
