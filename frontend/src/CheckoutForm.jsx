@@ -5,7 +5,7 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ cart, subtotal }) {
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
@@ -23,7 +23,7 @@ export default function CheckoutForm() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({items: [{ id: "xl-tshirt" }]})
+        body: JSON.stringify({cart})
       })
       .then(res => {
         return res.json();
@@ -31,7 +31,7 @@ export default function CheckoutForm() {
       .then(data => {
         setClientSecret(data.clientSecret);
       });
-  }, []);
+  }, [cart]);
 
   const cardStyle = {
     style: {
@@ -59,6 +59,7 @@ export default function CheckoutForm() {
   };
 
   const handleSubmit = async ev => {
+    console.log("handleSubmit")
     ev.preventDefault();
     setProcessing(true);
     const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -75,7 +76,7 @@ export default function CheckoutForm() {
       setSucceeded(true);
     }
   };
-
+  console.log(processing, disabled, succeeded)
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
@@ -87,7 +88,7 @@ export default function CheckoutForm() {
           {processing ? (
             <div className="spinner" id="spinner"></div>
           ) : (
-            "Pay"
+            `Pay $${subtotal}`
           )}
         </span>
       </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function SelectionItem({bread, setCart}) {
+export default function SelectionItem({bread, cart, setCart, catalogue, setSubtotal}) {
     const [count, setCount] = useState(0);
 
     function decrementCount(e) {
@@ -18,7 +18,9 @@ export default function SelectionItem({bread, setCart}) {
                     return prevCart.filter((cartItem) => cartItem.id !== bread.id)
                 });
             }
-            // Otherwise: decrement cart quantity
+            // Otherwise: update subtotal...
+            addToSubtotal(-getPrice());
+            // ... and decrement cart quantity
             return (
                 prevCart.map((cartItem) => {
                     if (cartItem.id === bread.id) {
@@ -46,6 +48,8 @@ export default function SelectionItem({bread, setCart}) {
                     quantity: 0
                 });
             }
+            // update subtotal
+            addToSubtotal(getPrice());
             return (
                 // increment cart quantity
                 prevCart.map((cartItem) => {
@@ -56,6 +60,19 @@ export default function SelectionItem({bread, setCart}) {
                 })
             )
         })
+    }
+
+    function getPrice() {
+        // get price
+        for(var i = 0; i < catalogue.length; i += 1) {
+            if(catalogue[i]["id"] === bread.id) {
+                return catalogue[i]["price"]/100
+            }
+        }
+    }
+
+    function addToSubtotal(amount) {
+        setSubtotal((prevSubtotal) => prevSubtotal + amount);
     }
 
     return (

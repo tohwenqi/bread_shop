@@ -10,7 +10,7 @@ import Selection from "./components/selection/Selection";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
-// import "./App.css";
+import "./App.css";
 import axios from 'axios';
 
 // Make sure to call loadStripe outside of a component’s render to avoid
@@ -21,6 +21,7 @@ const BACKEND_DOMAIN = 'http://localhost:4242'
 export default function App() {
   const [catalogue, setCatalogue] = useState([]);
   const [cart, setCart] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
   useEffect(() => {
     async function fetchCatalogue() {
       const response = await axios(BACKEND_DOMAIN + "/shop");
@@ -34,7 +35,7 @@ export default function App() {
         <Header /> 
         <Switch>
           <Route path='/home'>
-            <Selection catalogue={catalogue} cart={cart} setCart={setCart} />
+            <Selection catalogue={catalogue} cart={cart} setCart={setCart} subtotal={subtotal} setSubtotal={setSubtotal}/>
             <div className="center">
               <Link to="/payment">
                 <button className="waves-effect waves-light btn">
@@ -45,7 +46,7 @@ export default function App() {
           </Route>
           <Route path='/payment'>
             <Elements stripe={promise}>
-              <CheckoutForm />
+              <CheckoutForm cart={cart} subtotal={subtotal}/>
             </Elements>
             <div className="center">
               <Link to="/home">

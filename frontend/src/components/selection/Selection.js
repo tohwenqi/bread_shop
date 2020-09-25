@@ -2,7 +2,7 @@ import React from 'react';
 import SelectionItem from "./SelectionItem";
 import Cart from "./Cart";
 
-export default function Selection({catalogue, cart, setCart}) {
+export default function Selection({catalogue, cart, setCart, subtotal, setSubtotal}) {
     return (
         <React.Fragment>
             <div className="center">
@@ -11,12 +11,12 @@ export default function Selection({catalogue, cart, setCart}) {
             <div className="row">
                 { catalogue.map((bread) => {
                     return (
-                        <SelectionItem key={bread.id} bread={bread} setCart={setCart}/>
+                        <SelectionItem key={bread.id} bread={bread} cart={cart} setCart={setCart} catalogue={catalogue} setSubtotal={setSubtotal}/>
                     )
                 }) }
             </div>
             <div>
-                <Cart cart={cart} catalogue={catalogue}/>
+                <Cart cart={cart} catalogue={catalogue} subtotal={subtotal}/>
             </div>
         </React.Fragment>
     )

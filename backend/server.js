@@ -8,25 +8,40 @@ const stripe = require("stripe")("sk_test_51HNocRLdpw1A1hob55ts3D5oLd4SXzIZtQhHc
 app.use(express.static("."));
 app.use(express.json());
 app.use(cors());
+const catalogue = require('./catalogue.json');
+const bread = catalogue.bread;
 
-const calculateOrderAmount = items => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
-  // people from directly manipulating the amount on the client
-  return 1400;
+const calculateOrderAmount = cart => {
+  // assumes all items in cart are bread
+  // get prices
+  const prices = [];
+  const quantities = [];
+  cart.forEach((cartItem) => {
+      for(var i = 0; i < bread.length; i += 1) {
+          if(bread[i]["id"] === cartItem.id) {
+              prices.push(bread[i]["price"]);
+              quantities.push(cartItem.quantity);
+          }
+      }
+  })
+  // compute subtotal
+  let subtotal = 0;
+  for(var i = 0; i < prices.length; i += 1) {
+      subtotal += prices[i] * quantities[i];
+  }
+  return subtotal;
 };
 
-const items = require('./items.json');
 app.get("/shop", (req, res) => {
-  res.json(items);
+  res.json(catalogue);
 })
 
 app.post("/create-payment-intent", async (req, res) => {
-  const { items } = req.body;
+  const { cart } = req.body;
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: "usd"
+    amount: calculateOrderAmount(cart),
+    currency: "sgd"
   });
   res.send({
     clientSecret: paymentIntent.client_secret

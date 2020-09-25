@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Cart({cart, catalogue}) {
+export default function Cart({cart, catalogue, subtotal}) {
     if (cart.length === 0) {
         return null
     }
@@ -26,12 +26,6 @@ export default function Cart({cart, catalogue}) {
             }
         }
     })
-        
-    // compute subtotal
-    let subtotal = 0;
-    for(var i = 0; i < prices.length; i += 1) {
-        subtotal += prices[i] * quantities[i] / 100;
-    }
 
     return (
         <div className="column">
