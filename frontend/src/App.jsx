@@ -10,7 +10,7 @@ import Selection from "./components/selection/Selection";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
-import "./App.css";
+// import "./App.css";
 import axios from 'axios';
 
 // Make sure to call loadStripe outside of a component’s render to avoid
